@@ -10,11 +10,12 @@ class CategoriesPage extends StatelessWidget {
         title: const Text('MaxMealApp'),
       ),
       body: GridView(
+        padding: const EdgeInsets.all(16),
         gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
           maxCrossAxisExtent: 200,
           childAspectRatio: 3 / 2,
-          crossAxisSpacing: 20,
-          mainAxisSpacing: 20,
+          crossAxisSpacing: 16,
+          mainAxisSpacing: 16,
         ),
         children: DUMMY_CATEGORIES
             .map((ctg) => CategoryItem(
