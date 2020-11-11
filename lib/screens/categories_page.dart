@@ -19,6 +19,7 @@ class CategoriesPage extends StatelessWidget {
         ),
         children: DUMMY_CATEGORIES
             .map((ctg) => CategoryItem(
+                  id: ctg.id,
                   title: ctg.title,
                   color: ctg.color,
                 ))
