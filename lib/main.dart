@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:max_meal_guide_app/screens/categories_page.dart';
 import 'package:max_meal_guide_app/screens/category_meals_page.dart';
+import 'package:max_meal_guide_app/screens/meal_detail_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -31,9 +32,17 @@ class MyApp extends StatelessWidget {
               fontWeight: FontWeight.bold,
             )),
       ),
-      home: CategoriesPage(),
+      // home: CategoriesPage(),
       routes: {
-        '/category-meals': (context) => CategoryMealsPage(),
+        '/': (context) => CategoriesPage(),
+        CategoryMealsPage.routeName: (context) => CategoryMealsPage(),
+        MealDetailsPage.routeName: (context) => MealDetailsPage(),
+      },
+      onGenerateRoute: (settings) {
+        print(settings.arguments);
+      },
+      onUnknownRoute: (settings) {
+        return MaterialPageRoute(builder: (context) => CategoriesPage());
       },
     );
   }
