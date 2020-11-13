@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:max_meal_guide_app/screens/categories_page.dart';
 import 'package:max_meal_guide_app/screens/category_meals_page.dart';
+import 'package:max_meal_guide_app/screens/filters_page.dart';
 import 'package:max_meal_guide_app/screens/meal_detail_page.dart';
 import 'package:max_meal_guide_app/screens/tabs_page.dart';
 
@@ -38,6 +39,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => TabsPage(),
         CategoryMealsPage.routeName: (context) => CategoryMealsPage(),
         MealDetailsPage.routeName: (context) => MealDetailsPage(),
+        FiltersPage.routeName: (context) => FiltersPage(),
       },
       onGenerateRoute: (settings) {
         print(settings.arguments);
