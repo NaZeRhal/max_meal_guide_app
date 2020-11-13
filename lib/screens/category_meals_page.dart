@@ -1,28 +1,45 @@
 import 'package:flutter/material.dart';
-import 'package:max_meal_guide_app/dummy_data.dart';
+import 'package:max_meal_guide_app/models/meal.dart';
 import 'package:max_meal_guide_app/widgets/meal_item.dart';
 
-class CategoryMealsPage extends StatelessWidget {
+class CategoryMealsPage extends StatefulWidget {
   static const String routeName = '/category-meals';
-  // final String categoryId;
-  // final String categoryTitle;
+  final List<Meal> availableMealsList;
 
-  // const CategoryMealsPage({
-  //   Key key,
-  //   @required this.categoryId,
-  //   @required this.categoryTitle,
-  // }) : super(key: key);
+  const CategoryMealsPage(this.availableMealsList);
+
+  @override
+  _CategoryMealsPageState createState() => _CategoryMealsPageState();
+}
+
+class _CategoryMealsPageState extends State<CategoryMealsPage> {
+  String categoryTitle;
+  List<Meal> mealsList;
+  bool isLoadedInitData = false;
+
+  @override
+  void didChangeDependencies() {
+    if (!isLoadedInitData) {
+      final routeArgs =
+          ModalRoute.of(context).settings.arguments as Map<String, String>;
+      final categoryId = routeArgs['id'];
+      categoryTitle = routeArgs['title'];
+      mealsList = widget.availableMealsList
+          .where((meal) => meal.categories.contains(categoryId))
+          .toList();
+      isLoadedInitData = true;
+    }
+    super.didChangeDependencies();
+  }
+
+  void _removeItem(String id) {
+    setState(() {
+      mealsList.removeWhere((meal) => meal.id == id);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    final routeArgs =
-        ModalRoute.of(context).settings.arguments as Map<String, String>;
-    final categoryId = routeArgs['id'];
-    final categoryTitle = routeArgs['title'];
-    final categoryMeals = DUMMY_MEALS
-        .where((meal) => meal.categories.contains(categoryId))
-        .toList();
-
     return Scaffold(
       appBar: AppBar(
         title: Text(categoryTitle),
@@ -30,15 +47,15 @@ class CategoryMealsPage extends StatelessWidget {
       body: ListView.builder(
         itemBuilder: (context, index) {
           return MealItem(
-            id: categoryMeals[index].id,
-            title: categoryMeals[index].title,
-            duration: categoryMeals[index].duration,
-            complexity: categoryMeals[index].complexity,
-            affordability: categoryMeals[index].affordability,
-            imageUrl: categoryMeals[index].imageUrl,
+            id: mealsList[index].id,
+            title: mealsList[index].title,
+            duration: mealsList[index].duration,
+            complexity: mealsList[index].complexity,
+            affordability: mealsList[index].affordability,
+            imageUrl: mealsList[index].imageUrl,
           );
         },
-        itemCount: categoryMeals.length,
+        itemCount: mealsList.length,
       ),
     );
   }

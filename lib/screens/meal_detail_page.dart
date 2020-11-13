@@ -3,6 +3,10 @@ import 'package:max_meal_guide_app/dummy_data.dart';
 
 class MealDetailsPage extends StatelessWidget {
   static const String routeName = '/meal-details';
+  final Function toggleFavorites;
+  final Function isMealFavorite;
+
+  const MealDetailsPage(this.toggleFavorites, this.isMealFavorite);
 
   Widget _buildSectionTitle(BuildContext context, String text) {
     return Container(
@@ -37,53 +41,61 @@ class MealDetailsPage extends StatelessWidget {
         DUMMY_MEALS.firstWhere((element) => element.id == mealId);
 
     return Scaffold(
-        appBar: AppBar(
-          title: Text('${selectedMeal.title}'),
-        ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(
-                height: 300,
-                width: double.infinity,
-                child: Image.network(
-                  selectedMeal.imageUrl,
-                  fit: BoxFit.cover,
-                ),
+      appBar: AppBar(
+        title: Text('${selectedMeal.title}'),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              height: 300,
+              width: double.infinity,
+              child: Image.network(
+                selectedMeal.imageUrl,
+                fit: BoxFit.cover,
               ),
-              _buildSectionTitle(context, 'Ingredients'),
-              _buildContainer(
-                child: ListView.builder(
-                  itemBuilder: (context, index) => Card(
-                    color: Theme.of(context).accentColor,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 4, horizontal: 8),
-                      child: Text(selectedMeal.ingredients[index]),
-                    ),
+            ),
+            _buildSectionTitle(context, 'Ingredients'),
+            _buildContainer(
+              child: ListView.builder(
+                itemBuilder: (context, index) => Card(
+                  color: Theme.of(context).accentColor,
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                    child: Text(selectedMeal.ingredients[index]),
                   ),
-                  itemCount: selectedMeal.ingredients.length,
                 ),
+                itemCount: selectedMeal.ingredients.length,
               ),
-              _buildSectionTitle(context, 'Steps'),
-              _buildContainer(
-                child: ListView.builder(
-                  itemBuilder: (context, index) => Column(
-                    children: [
-                      ListTile(
-                        leading: CircleAvatar(
-                          child: Text('# ${index + 1}'),
-                        ),
-                        title: Text(selectedMeal.steps[index]),
+            ),
+            _buildSectionTitle(context, 'Steps'),
+            _buildContainer(
+              child: ListView.builder(
+                itemBuilder: (context, index) => Column(
+                  children: [
+                    ListTile(
+                      leading: CircleAvatar(
+                        child: Text('# ${index + 1}'),
                       ),
-                      Divider(),
-                    ],
-                  ),
-                  itemCount: selectedMeal.steps.length,
+                      title: Text(selectedMeal.steps[index]),
+                    ),
+                    Divider(),
+                  ],
                 ),
+                itemCount: selectedMeal.steps.length,
               ),
-            ],
-          ),
-        ));
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => toggleFavorites(mealId),
+        child: Icon(
+          isMealFavorite(mealId) ? Icons.star : Icons.star_border,
+          size: 32,
+        ),
+      ),
+    );
   }
 }
